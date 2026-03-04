@@ -265,3 +265,13 @@ __pycache__/
 
 /.vs
 **/.appmod/.appcat
+
+**/properties/
+**/Properties/*
+./Properties/serviceDependencies.json
+/.Properties
+
+
+
+/.gitignore
+/DfE.NCS.Course.Mock.Api/.vscode
