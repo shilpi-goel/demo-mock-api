@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Http;
+using DfE.NCS.Course.Mock.Function.DataGenerators;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using TLevelModel = DfE.NCS.Course.Mock.Function.Models.TLevel;
 
 namespace DfE.NCS.Course.Mock.Function.Functions
 {
@@ -32,21 +30,7 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 pageSize = 10;
             }
 
-            var filePath = Path.Combine(AppContext.BaseDirectory, "Data", "t-level.json");
-
-            if (!File.Exists(filePath))
-            {
-                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
-                await errorResponse.WriteAsJsonAsync(new { error = "T-Levels data file not found" });
-                return errorResponse;
-            }
-
-            var json = await File.ReadAllTextAsync(filePath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-            using var doc = JsonDocument.Parse(json);
-            var coursesElement = doc.RootElement.GetProperty("courses");
-            var allTLevels = JsonSerializer.Deserialize<List<TLevelModel>>(coursesElement.GetRawText(), options) ?? new List<TLevelModel>();
+            var allTLevels = TLevelDataGenerator.Generate(100);
 
             var paginatedTLevels = allTLevels
                 .Skip((pageNumber - 1) * pageSize)

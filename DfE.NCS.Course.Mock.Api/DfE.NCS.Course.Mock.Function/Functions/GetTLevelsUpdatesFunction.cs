@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Http;
+using DfE.NCS.Course.Mock.Function.DataGenerators;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using TLevelModel = DfE.NCS.Course.Mock.Function.Models.TLevel;
 
 namespace DfE.NCS.Course.Mock.Function.Functions
 {
@@ -39,24 +37,14 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 pageSize = 10;
             }
 
-            var filePath = Path.Combine(AppContext.BaseDirectory, "Data", "t-level.json");
-
-            if (!File.Exists(filePath))
+            if (!int.TryParse(req.Query["totalCount"], out var totalCount) || totalCount < 1)
             {
-                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
-                await errorResponse.WriteAsJsonAsync(new { error = "T-Levels data file not found" });
-                return errorResponse;
+                totalCount = 100;
             }
 
-            var json = await File.ReadAllTextAsync(filePath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-            using var doc = JsonDocument.Parse(json);
-            var coursesElement = doc.RootElement.GetProperty("courses");
-            var allTLevels = JsonSerializer.Deserialize<List<TLevelModel>>(coursesElement.GetRawText(), options) ?? new List<TLevelModel>();
+            var allTLevels = TLevelDataGenerator.GenerateUpdates(totalCount);
 
             var filteredUpdates = allTLevels
-                .Where(t => t.UpdateDate.HasValue && t.UpdateDate.Value >= cutOffDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

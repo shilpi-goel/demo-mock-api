@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Http;
+using DfE.NCS.Course.Mock.Function.DataGenerators;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using CourseModel = DfE.NCS.Course.Mock.Function.Models.Course;
 
 namespace DfE.NCS.Course.Mock.Function.Functions
 {
@@ -39,24 +37,14 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 pageSize = 10;
             }
 
-            var filePath = Path.Combine(AppContext.BaseDirectory, "Data", "courses.json");
-
-            if (!File.Exists(filePath))
+            if (!int.TryParse(req.Query["totalCount"], out var totalCount) || totalCount < 1)
             {
-                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
-                await errorResponse.WriteAsJsonAsync(new { error = "Courses data file not found" });
-                return errorResponse;
+                totalCount = 50;
             }
 
-            var json = await File.ReadAllTextAsync(filePath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-            using var doc = JsonDocument.Parse(json);
-            var coursesElement = doc.RootElement.GetProperty("courses");
-            var allCourses = JsonSerializer.Deserialize<List<CourseModel>>(coursesElement.GetRawText(), options) ?? new List<CourseModel>();
+            var allCourses = CourseDataGenerator.GenerateUpdates(totalCount);
 
             var filteredUpdates = allCourses
-                .Where(c => c.UpdateDate.HasValue && c.UpdateDate.Value >= cutOffDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

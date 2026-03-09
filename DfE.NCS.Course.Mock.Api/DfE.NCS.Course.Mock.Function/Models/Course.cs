@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace DfE.NCS.Course.Mock.Function.Models
 {
     public class Course
@@ -7,18 +9,32 @@ namespace DfE.NCS.Course.Mock.Function.Models
         public string CourseName { get; set; }
         public int? CourseType { get; set; }
         public string SectorDescription { get; set; }
-        public string EducationLevel { get; set; }
+
+        [JsonConverter(typeof(NullableEnumValueConverter))]
+        public int? EducationLevel { get; set; }
+
         public string AwardingBody { get; set; }
+
+        [JsonConverter(typeof(EnumValueConverter))]
         public int DeliveryMode { get; set; }
+
         public string FlexibleStartDate { get; set; }
         public DateTime StartDate { get; set; }
         public string CourseWebsite { get; set; }
         public decimal? Cost { get; set; }
         public string CostDescription { get; set; }
+
+        [JsonConverter(typeof(EnumValueConverter))]
         public int DurationUnit { get; set; }
+
         public int DurationValue { get; set; }
+
+        [JsonConverter(typeof(EnumValueConverter))]
         public int StudyMode { get; set; }
+
+        [JsonConverter(typeof(EnumValueConverter))]
         public int AttendancePattern { get; set; }
+
         public int? National { get; set; }
         public string Region { get; set; }
         public string ParentRegion { get; set; }
@@ -44,7 +60,5 @@ namespace DfE.NCS.Course.Mock.Function.Models
         public string LearnAimRefTitle { get; set; }
         public string QualificationLevel { get; set; }
         public string AwardingOrganisation { get; set; }
-        public UpdateType? UpdateType { get; set; }
-        public DateTime? UpdateDate { get; set; }
     }
 }

@@ -25,7 +25,6 @@ namespace DfE.NCS.Course.Mock.Function.Models
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public int TLevelQualificationLevel { get; set; }
-        public UpdateType? UpdateType { get; set; }
-        public DateTime? UpdateDate { get; set; }
+        
     }
 }

@@ -18,12 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\courses.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\t-level.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>
