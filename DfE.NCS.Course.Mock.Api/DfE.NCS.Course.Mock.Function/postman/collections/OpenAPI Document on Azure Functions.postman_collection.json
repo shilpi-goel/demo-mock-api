@@ -1,0 +1,611 @@
+{
+  "info": {
+    "_postman_id": "ac80f92a-4095-4fb8-ac09-c6019ff0cefd",
+    "name": "OpenAPI Document on Azure Functions",
+    "description": "This is the OpenAPI Document on Azure Functions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "etl",
+      "item": [
+        {
+          "name": "start",
+          "item": [
+            {
+              "name": "Start a new ETL pipeline instance",
+              "id": "fca251ae-5c26-4459-a6c4-82219950ae61",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/etl/start",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "etl",
+                    "start"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "255e6e9f-7f68-4936-8707-37d34d9eba7e",
+                  "name": "Instance started; returns management URLs",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/etl/start",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "etl",
+                        "start"
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{}"
+                }
+              ]
+            }
+          ],
+          "id": "15462b05-c8c1-4a6b-abfc-0386ce46d79f"
+        },
+        {
+          "name": "{instanceId}",
+          "item": [
+            {
+              "name": "status",
+              "item": [
+                {
+                  "name": "Get the status and progress of a specific ETL instance",
+                  "id": "33d3157d-4844-439e-b50e-63f4f18fe83e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/etl/:instanceId/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "etl",
+                        ":instanceId",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "instanceId",
+                          "value": "string",
+                          "description": "The orchestration instance ID"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "bf856fa9-0492-4b86-91cc-388a04a97f35",
+                      "name": "Runtime status and per-step EtlProgress",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{}"
+                    },
+                    {
+                      "id": "082c70e0-22c1-43d6-bbf0-559ee05e65c7",
+                      "name": "Instance not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ],
+              "id": "53b9f372-5644-4ecf-9452-caf68765d628"
+            },
+            {
+              "name": "rerun",
+              "item": [
+                {
+                  "name": "Rerun a failed ETL instance from the beginning",
+                  "id": "af8cda59-c07d-4151-b378-feba8ca80f1b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/etl/:instanceId/rerun",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "etl",
+                        ":instanceId",
+                        "rerun"
+                      ],
+                      "variable": [
+                        {
+                          "key": "instanceId",
+                          "value": "string",
+                          "description": "The failed orchestration instance ID"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "7d125d40-1bd8-48bc-b490-89a58586d021",
+                      "name": "Original and new instance IDs",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/rerun",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "rerun"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The failed orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Accepted",
+                      "code": 202,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{}"
+                    },
+                    {
+                      "id": "410e72b1-88d0-4a74-b418-60a62558111f",
+                      "name": "Instance is not in a failed state",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/rerun",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "rerun"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The failed orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    },
+                    {
+                      "id": "564414ee-58d5-47de-a411-88405ba65959",
+                      "name": "Instance not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/rerun",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "rerun"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The failed orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ],
+              "id": "fd3bac6c-0911-4426-80e9-eac5a493ac03"
+            },
+            {
+              "name": "rerun-checkpoint",
+              "item": [
+                {
+                  "name": "Resume a failed ETL instance from the last successful step",
+                  "id": "c6915a23-a559-4033-b2e4-8c6aac39207f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/etl/:instanceId/rerun-checkpoint",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "etl",
+                        ":instanceId",
+                        "rerun-checkpoint"
+                      ],
+                      "variable": [
+                        {
+                          "key": "instanceId",
+                          "value": "string",
+                          "description": "The failed orchestration instance ID"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "926a6397-718e-4e70-8040-db0d5a8bce9d",
+                      "name": "Original instance ID, new instance ID, and the step resumed from",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/rerun-checkpoint",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "rerun-checkpoint"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The failed orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Accepted",
+                      "code": 202,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{}"
+                    },
+                    {
+                      "id": "a0708b5e-9a62-418d-9754-ff1b912e3a30",
+                      "name": "Instance is not in a failed state",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/rerun-checkpoint",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "rerun-checkpoint"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The failed orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    },
+                    {
+                      "id": "f9e1668f-10ef-4103-a98b-942c1ef59b4a",
+                      "name": "Instance not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/etl/:instanceId/rerun-checkpoint",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "etl",
+                            ":instanceId",
+                            "rerun-checkpoint"
+                          ],
+                          "variable": [
+                            {
+                              "key": "instanceId",
+                              "value": "string",
+                              "description": "The failed orchestration instance ID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ],
+              "id": "868ad80b-9140-4624-85c7-3cde514c19e9"
+            }
+          ],
+          "id": "6cf812cf-fc67-44f2-a0fb-4dfd5a14c04a"
+        },
+        {
+          "name": "instances",
+          "item": [
+            {
+              "name": "Get status and progress for all ETL pipeline instances",
+              "id": "d53ea9eb-4bf2-4c61-90ad-95b7f3b85426",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/etl/instances?status=string&createdFrom=string&createdTo=string",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "etl",
+                    "instances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by runtime status (e.g. Running, Completed, Failed)",
+                      "key": "status",
+                      "value": "string"
+                    },
+                    {
+                      "description": "ISO-8601 lower bound for instance creation time",
+                      "key": "createdFrom",
+                      "value": "string"
+                    },
+                    {
+                      "description": "ISO-8601 upper bound for instance creation time",
+                      "key": "createdTo",
+                      "value": "string"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "7b265951-21a5-4b58-b0ed-179d540cc3f4",
+                  "name": "Total count and list of instances with EtlProgress",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/etl/instances?status=string&createdFrom=string&createdTo=string",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "etl",
+                        "instances"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by runtime status (e.g. Running, Completed, Failed)",
+                          "key": "status",
+                          "value": "string"
+                        },
+                        {
+                          "description": "ISO-8601 lower bound for instance creation time",
+                          "key": "createdFrom",
+                          "value": "string"
+                        },
+                        {
+                          "description": "ISO-8601 upper bound for instance creation time",
+                          "key": "createdTo",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{}"
+                }
+              ]
+            }
+          ],
+          "id": "4715fde1-305c-417b-a591-cecf2d7f52d0"
+        }
+      ],
+      "id": "b230f6bd-0224-46cb-b25f-0bd6fb592172"
+    }
+  ],
+  "variable": [
+    {
+      "id": "2b7e1469-258b-449d-9a4c-ad138f194aeb",
+      "key": "baseUrl",
+      "value": "http://localhost:7008/api"
+    }
+  ]
+}
