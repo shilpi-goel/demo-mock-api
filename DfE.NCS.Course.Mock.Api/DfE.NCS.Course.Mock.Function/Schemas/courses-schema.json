@@ -1,0 +1,246 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "number"
+    },
+    "pageNumber": {
+      "type": "number"
+    },
+    "pageSize": {
+      "type": "number"
+    },
+    "courses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "courseId": {
+            "type": "string"
+          },
+          "courseName": {
+            "type": "string"
+          },
+          "courseType": {
+            "type": "number"
+          },
+          "sectorDescription": {
+            "type": "string"
+          },
+          "educationLevel": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "value",
+              "description"
+            ]
+          },
+          "awardingBody": {},
+          "deliveryMode": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "value",
+              "description"
+            ]
+          },
+          "flexibleStartDate": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "courseWebsite": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number"
+          },
+          "costDescription": {
+            "type": "string"
+          },
+          "durationUnit": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "value",
+              "description"
+            ]
+          },
+          "durationValue": {
+            "type": "number"
+          },
+          "studyMode": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "value",
+              "description"
+            ]
+          },
+          "attendancePattern": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "value",
+              "description"
+            ]
+          },
+          "national": {},
+          "region": {},
+          "parentRegion": {},
+          "whoTheCourseIsFor": {
+            "type": "string"
+          },
+          "entryRequirements": {
+            "type": "string"
+          },
+          "whatYoullLearn": {
+            "type": "string"
+          },
+          "howYoullLearn": {
+            "type": "string"
+          },
+          "whatYoullNeed": {
+            "type": "string"
+          },
+          "howYoullBeAssessed": {
+            "type": "string"
+          },
+          "whatYouCanDoNext": {
+            "type": "string"
+          },
+          "providerName": {
+            "type": "string"
+          },
+          "providerWebsite": {
+            "type": "string"
+          },
+          "providerEmail": {
+            "type": "string"
+          },
+          "providerPhoneNumber": {
+            "type": "string"
+          },
+          "venueName": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string"
+          },
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string"
+          },
+          "town": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "learnAimRefTitle": {
+            "type": "string"
+          },
+          "qualificationLevel": {
+            "type": "string"
+          },
+          "awardingOrganisation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "courseId",
+          "courseName",
+          "educationLevel",
+          "awardingBody",
+          "deliveryMode",
+          "flexibleStartDate",
+          "startDate",
+          "courseWebsite",
+          "costDescription",
+          "durationUnit",
+          "durationValue",
+          "studyMode",
+          "attendancePattern",
+          "national",
+          "region",
+          "parentRegion",
+          "whoTheCourseIsFor",
+          "entryRequirements",
+          "whatYoullLearn",
+          "howYoullLearn",
+          "whatYoullNeed",
+          "howYoullBeAssessed",
+          "whatYouCanDoNext",
+          "providerName",
+          "venueName",
+          "postcode",
+          "addressLine1",
+          "addressLine2",
+          "town",
+          "county",
+          "latitude",
+          "longitude",
+          "learnAimRefTitle",
+          "qualificationLevel",
+          "awardingOrganisation"
+        ]
+      }
+    }
+  },
+  "required": [
+    "totalCount",
+    "pageNumber",
+    "pageSize",
+    "courses"
+  ]
+}

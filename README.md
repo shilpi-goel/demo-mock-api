@@ -1,20 +1,71 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# DfE NCS Course Mock API
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+A .NET 10 Azure Functions app that serves mock course and T Level data for the National Careers Service (NCS), for use in local development and integration testing.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Prerequisites
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- [Azure Functions Core Tools v4](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local)
+- [Postman](https://www.postman.com/downloads/)
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Running Locally
+
+Navigate to the function project and start the host:
+
+    cd DfE.NCS.Course.Mock.Api/DfE.NCS.Course.Mock.Function
+    func start
+
+API base URL: `http://localhost:7071/api`
+
+---
+
+## Postman
+
+All Postman files are in the `postman/` folder:
+
+    postman/
+      collections/
+        CourseDetailsMockAPI.postman_collection.json
+      environments/
+        dfe-ncs-local.postman_environment.json
+        dfe-ncs-dev.postman_environment.json
+      globals/
+        workspace.postman_globals.json
+
+**To import into Postman:**
+
+1. Open Postman and click **Import** (top-left)
+1. Select `Connect Local Git Repo`
+1. Select Git folder
+1. Postman should automatically detect the collection, environment, and globals files. Select all and click **Import**.
+
+
+---
+
+## Endpoints
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/courses/list` | Paginated list of courses |
+| GET | `/api/courses/updates` | Courses updated since a cutoff date |
+| GET | `/api/t-levels/list` | Paginated list of T Levels |
+| GET | `/api/t-levels/updates` | T Levels updated since a cutoff date |
+
+### Query Parameters
+
+**`/api/courses/list`** and **`/api/t-levels/list`**
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `pageNumber` | `1` | Page number (1-based) |
+| `pageSize` | `10` | Results per page |
+| `totalCount` | `100` | Total records to generate |
+
+**`/api/courses/updates`** and **`/api/t-levels/updates`**
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `cutOffDate` | Yes | ISO 8601 date — returns records updated on or after this date |
+| `pageNumber` | No | Page number, default `1` |
+| `pageSize` | No | Results per page, default `10` |
+| `totalCount` | No | Total records to generate, default `100` |

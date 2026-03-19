@@ -1,0 +1,157 @@
+{
+  "info": {
+    "_postman_id": "fc31ba38-7529-4e32-8edf-9e3db15283e3",
+    "name": "CourseDetailsMockAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GetCourses",
+      "id": "6bc83a12-45de-476b-a3d2-bf635e8b6da6",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/courses/list?pageNumber=10&pageSize=4&totalCount=100",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "courses",
+            "list"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "10"
+            },
+            {
+              "key": "pageSize",
+              "value": "4"
+            },
+            {
+              "key": "totalCount",
+              "value": "100"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetCoursesUpdates",
+      "id": "bc2b0361-fd3c-46a9-9f78-cd1b7f165da3",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/courses/updates?cutOffDate=2024-11-19&pageNumber=3&pageSize=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "courses",
+            "updates"
+          ],
+          "query": [
+            {
+              "key": "cutOffDate",
+              "value": "2024-11-19"
+            },
+            {
+              "key": "pageNumber",
+              "value": "3"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetTLevelsUpdates",
+      "id": "74d0a07b-0119-4302-937d-e2e0e840b5a4",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/t-levels/updates?cutOffDate=2025-01-15&pageNumber=2&pageSize=7&totalCount=150",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "t-levels",
+            "updates"
+          ],
+          "query": [
+            {
+              "key": "cutOffDate",
+              "value": "2025-01-15"
+            },
+            {
+              "key": "pageNumber",
+              "value": "2"
+            },
+            {
+              "key": "pageSize",
+              "value": "7"
+            },
+            {
+              "key": "totalCount",
+              "value": "150"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetTLevels",
+      "id": "0708a853-c1d0-4076-ae23-49b49b9be421",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/t-levels/list?pageNumber=10&pageSize=5",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "t-levels",
+            "list"
+          ],
+          "query": [
+            {
+              "key": "pageNumber",
+              "value": "10"
+            },
+            {
+              "key": "pageSize",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
