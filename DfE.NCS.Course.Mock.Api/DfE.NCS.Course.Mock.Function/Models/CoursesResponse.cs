@@ -1,0 +1,18 @@
+namespace DfE.NCS.Course.Mock.Function.Models
+{
+    public class CoursesResponse
+    {
+        public int TotalCount { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public List<Course> Courses { get; set; }
+
+        public CoursesResponse(List<Course> courses, int totalCount, int pageNumber, int pageSize)
+        {
+            Courses = courses;
+            TotalCount = totalCount;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+        }
+    }
+}
