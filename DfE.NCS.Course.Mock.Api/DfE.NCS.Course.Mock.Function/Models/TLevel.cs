@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace DfE.NCS.Course.Mock.Function.Models
 {
     public class TLevel
     {
+        [JsonPropertyName("tlevelId")]
         public string TLevelId { get; set; }
         public string CourseName { get; set; }
         public DateTime StartDate { get; set; }
@@ -24,6 +27,7 @@ namespace DfE.NCS.Course.Mock.Function.Models
         public string County { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+        [JsonPropertyName("tlevelQualificationLevel")]
         public int TLevelQualificationLevel { get; set; }
         
     }

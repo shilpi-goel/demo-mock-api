@@ -1,4 +1,5 @@
-﻿using CourseModel = DfE.NCS.Course.Mock.Function.Models.Course;
+﻿using DfE.NCS.Course.Mock.Function.Models;
+using CourseModel = DfE.NCS.Course.Mock.Function.Models.Course;
 using CourseUpdateModel = DfE.NCS.Course.Mock.Function.Models.CourseUpdate;
 
 namespace DfE.NCS.Course.Mock.Function.DataGenerators
@@ -9,21 +10,52 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
 
         // Delivery mode: 1=ClassroomBased, 2=Online, 3=WorkBased, 4=BlendedLearning
         private static readonly int[] DeliveryModes = [1, 2, 3, 4];
+        private static readonly Dictionary<int, string> DeliveryModeDescriptions = new()
+        {
+            { 1, "ClassroomBased" }, { 2, "Online" }, { 3, "WorkBased" }, { 4, "BlendedLearning" }
+        };
 
         // Duration unit: 1=Days, 2=Weeks, 3=Months, 4=Years, 5=Hours
         private static readonly int[] DurationUnits = [1, 2, 3, 4, 5];
+        private static readonly Dictionary<int, string> DurationUnitDescriptions = new()
+        {
+            { 1, "Days" }, { 2, "Weeks" }, { 3, "Months" }, { 4, "Years" }, { 5, "Hours" }
+        };
 
         // Study mode: 1=FullTime, 2=PartTime, 3=Flexible
         private static readonly int[] StudyModes = [1, 2, 3];
+        private static readonly Dictionary<int, string> StudyModeDescriptions = new()
+        {
+            { 1, "FullTime" }, { 2, "PartTime" }, { 3, "Flexible" }
+        };
 
         // Attendance pattern: 1=Daytime, 2=Evening, 3=Weekend, 4=DayOrBlockRelease
         private static readonly int[] AttendancePatterns = [1, 2, 3, 4];
+        private static readonly Dictionary<int, string> AttendancePatternDescriptions = new()
+        {
+            { 1, "Daytime" }, { 2, "Evening" }, { 3, "Weekend" }, { 4, "DayOrBlockRelease" }
+        };
 
-        // Education level: 1=EntryLevel, 2=Level1, ..., 7=Level6
-        private static readonly int[] EducationLevels = [1, 2, 3, 4, 5, 6, 7];
+        // Education level: 0=EntryLevel, 1=One, ..., 6=Six
+        private static readonly int[] EducationLevels = [0, 1, 2, 3, 4, 5, 6];
+        private static readonly Dictionary<int, string> EducationLevelDescriptions = new()
+        {
+            { 0, "EntryLevel" }, { 1, "One" }, { 2, "Two" }, { 3, "Three" }, { 4, "Four" }, { 5, "Five" }, { 6, "Six" }
+        };
+
+        // Course type: 1=Essential Skills, 2=ESFA Adult Education Budget, 3=Advanced Learner Loans
+        private static readonly string[] CourseTypeValues = ["1", "2", "3"];
+        private static readonly Dictionary<string, string> CourseTypeDescriptions = new()
+        {
+            { "1", "Essential Skills" }, { "2", "ESFA Adult Education Budget" }, { "3", "Advanced Learner Loans" }
+        };
 
         // Update types: 1=NewlyAdded, 2=Updated, 3=Deleted
         private static readonly int[] UpdateTypes = [1, 2, 3];
+        private static readonly Dictionary<int, string> UpdateTypeDescriptions = new()
+        {
+            { 1, "NewlyAdded" }, { 2, "Updated" }, { 3, "Deleted" }
+        };
 
 
         private static readonly string[] CourseNames =
@@ -156,6 +188,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             for (int i = 0; i < count; i++)
             {
                 var course = GenerateCourse();
+                var updateTypeValue = PickRandom(UpdateTypes);
                 courses.Add(new CourseUpdateModel
                 {
                     Id = course.Id,
@@ -197,10 +230,13 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                     County = course.County,
                     Latitude = course.Latitude,
                     Longitude = course.Longitude,
+                    LearningAimRef = course.LearningAimRef,
+                    SectorSubjectArea = course.SectorSubjectArea,
+                    SectorCode = course.SectorCode,
                     LearnAimRefTitle = course.LearnAimRefTitle,
                     QualificationLevel = course.QualificationLevel,
                     AwardingOrganisation = course.AwardingOrganisation,
-                    UpdateType = PickRandom(UpdateTypes)
+                    UpdateType = new EnumDescriptor(PickRandom(UpdateTypes), UpdateTypeDescriptions[updateTypeValue])
                 });
             }
 
@@ -217,6 +253,12 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             var addressNumber = _random.Next(1, 200);
             var addressTemplate = PickRandom(AddressLine1Templates);
             var startDate = DateTime.UtcNow.AddDays(_random.Next(-180, 365));
+            var courseTypeValue = PickRandom(CourseTypeValues);
+            var educationLevelValue = PickRandom(EducationLevels);
+            var deliveryModeValue = PickRandom(DeliveryModes);
+            var durationUnitValue = PickRandom(DurationUnits);
+            var studyModeValue = PickRandom(StudyModes);
+            var attendancePatternValue = PickRandom(AttendancePatterns);
 
             var providerSlug = provider.ToLower().Replace(" ", "");
 
@@ -225,20 +267,21 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                 Id = Guid.NewGuid().ToString(),
                 CourseId = Guid.NewGuid().ToString(),
                 CourseName = courseName,
-                CourseType = MaybeNull(_random.Next(1, 4)),
+                CourseType = MaybeNullRef(new StringEnumDescriptor(courseTypeValue, CourseTypeDescriptions[courseTypeValue])),
                 SectorDescription = MaybeNull(PickRandom(SectorDescriptions)),
-                EducationLevel = MaybeNull(PickRandom(EducationLevels)),
+                SectorCode = string.Empty,
+                EducationLevel = MaybeNullRef(new EnumDescriptor(educationLevelValue, EducationLevelDescriptions[educationLevelValue])),
                 AwardingBody = MaybeNull(awardingOrg),
-                DeliveryMode = PickRandom(DeliveryModes),
+                DeliveryMode = new EnumDescriptor(deliveryModeValue, DeliveryModeDescriptions[deliveryModeValue]),
                 FlexibleStartDate = _random.Next(0, 2) == 1 ? "true" : "false",
                 StartDate = startDate,
                 CourseWebsite = $"https://www.{providerSlug}.ac.uk/courses/{courseName.ToLower().Replace(" ", "-")}",
                 Cost = MaybeNull((decimal)_random.Next(0, 5000)),
                 CostDescription = "Please contact the provider for cost information.",
-                DurationUnit = PickRandom(DurationUnits),
+                DurationUnit = new EnumDescriptor(durationUnitValue, DurationUnitDescriptions[durationUnitValue]),
                 DurationValue = _random.Next(1, 24),
-                StudyMode = PickRandom(StudyModes),
-                AttendancePattern = PickRandom(AttendancePatterns),
+                StudyMode = new EnumDescriptor(studyModeValue, StudyModeDescriptions[studyModeValue]),
+                AttendancePattern = new EnumDescriptor(attendancePatternValue, AttendancePatternDescriptions[attendancePatternValue]),
                 National = MaybeNull(_random.Next(0, 2)),
                 Region = MaybeNull(location.County),
                 ParentRegion = MaybeNull(location.County),
@@ -261,6 +304,8 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                 County = location.County,
                 Latitude = location.Lat,
                 Longitude = location.Lng,
+                LearningAimRef = string.Empty,
+                SectorSubjectArea = string.Empty,
                 LearnAimRefTitle = $"{qualLevel} Certificate in {courseName}",
                 QualificationLevel = qualLevel,
                 AwardingOrganisation = awardingOrg,
@@ -276,5 +321,8 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
 
         private static string MaybeNull(string value, int nullChancePercent = 30)
             => _random.Next(100) < nullChancePercent ? null! : value;
+
+        private static T? MaybeNullRef<T>(T value, int nullChancePercent = 30) where T : class
+            => _random.Next(100) < nullChancePercent ? null : value;
     }
 }

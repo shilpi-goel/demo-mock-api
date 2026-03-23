@@ -58,7 +58,7 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 .ToList();
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(new PaginatedResponse<Models.CourseUpdate>(filteredUpdates, totalCount, pageNumber, pageSize));
+            await response.WriteAsJsonAsync(new CourseUpdatesResponse(filteredUpdates, totalCount, pageNumber, pageSize));
             return response;
         }
     }

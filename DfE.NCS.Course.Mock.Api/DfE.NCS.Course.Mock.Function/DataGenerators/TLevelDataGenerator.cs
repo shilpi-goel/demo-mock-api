@@ -1,3 +1,4 @@
+using DfE.NCS.Course.Mock.Function.Models;
 using TLevelModel = DfE.NCS.Course.Mock.Function.Models.TLevel;
 using TLevelUpdateModel = DfE.NCS.Course.Mock.Function.Models.TLevelUpdate;
 
@@ -12,6 +13,10 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
 
         // Update types: 1=NewlyAdded, 2=Updated, 3=Deleted
         private static readonly int[] UpdateTypes = [1, 2, 3];
+        private static readonly Dictionary<int, string> UpdateTypeDescriptions = new()
+        {
+            { 1, "NewlyAdded" }, { 2, "Updated" }, { 3, "Deleted" }
+        };
 
         private static readonly string[] CourseNames =
         [
@@ -103,6 +108,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             for (int i = 0; i < count; i++)
             {
                 var tLevel = GenerateTLevel();
+                var updateTypeValue = PickRandom(UpdateTypes);
                 tLevels.Add(new TLevelUpdateModel
                 {
                     TLevelId = tLevel.TLevelId,
@@ -128,7 +134,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                     Latitude = tLevel.Latitude,
                     Longitude = tLevel.Longitude,
                     TLevelQualificationLevel = tLevel.TLevelQualificationLevel,
-                    UpdateType = PickRandom(UpdateTypes)
+                    UpdateType = new EnumDescriptor(updateTypeValue, UpdateTypeDescriptions[updateTypeValue])
                 });
             }
 
