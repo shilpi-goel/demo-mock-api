@@ -1,0 +1,5 @@
+name: dfe-ncs-local
+values:
+  - key: baseUrl
+    value: ''
+    enabled: true

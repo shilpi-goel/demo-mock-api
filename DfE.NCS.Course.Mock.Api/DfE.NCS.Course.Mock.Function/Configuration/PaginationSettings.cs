@@ -13,7 +13,7 @@ namespace DfE.NCS.Course.Mock.Function.Configuration
 
         public int DefaultPageSize => _configuration.GetValue("PaginationSettings:DefaultPageSize", 10);
 
-        public int DefaultTotalCount => _configuration.GetValue("PaginationSettings:DefaultTotalCount", 50);
+        public int DefaultTotalCount => _configuration.GetValue("PaginationSettings:DefaultTotalCount", 100);
 
         public int DefaultTLevelsTotalCount => _configuration.GetValue("PaginationSettings:DefaultTLevelsTotalCount", 100);
     }

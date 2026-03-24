@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/api/courses/list?pageNumber=10&pageSize=4&totalCount=100"
+method: GET
+queryParams:
+  pageNumber: "10"
+  pageSize: "4"
+  totalCount: "100"
+auth:
+  type: noauth
+order: 1000

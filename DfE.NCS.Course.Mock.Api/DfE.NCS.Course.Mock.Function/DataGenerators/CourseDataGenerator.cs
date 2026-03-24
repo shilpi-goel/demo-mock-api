@@ -236,7 +236,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                     LearnAimRefTitle = course.LearnAimRefTitle,
                     QualificationLevel = course.QualificationLevel,
                     AwardingOrganisation = course.AwardingOrganisation,
-                    UpdateType = new EnumDescriptor(PickRandom(UpdateTypes), UpdateTypeDescriptions[updateTypeValue])
+                    UpdateType = new EnumDescriptor(updateTypeValue, UpdateTypeDescriptions[updateTypeValue])
                 });
             }
 

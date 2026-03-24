@@ -1,5 +1,6 @@
 using Azure.Core.Serialization;
 using DfE.NCS.Course.Mock.Function.Configuration;
+using DfE.NCS.Course.Mock.Function.Storage;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,9 @@ builder.ConfigureFunctionsWebApplication();
 builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights()
-    .AddSingleton<IPaginationSettings, PaginationSettings>();
+    .AddSingleton<IPaginationSettings, PaginationSettings>()
+    .AddSingleton<ICourseStore, CourseStore>()
+    .AddSingleton<ITLevelStore, TLevelStore>();
 
 builder.Services.Configure<WorkerOptions>(options =>
 {

@@ -1,6 +1,5 @@
-using DfE.NCS.Course.Mock.Function.Configuration;
-using DfE.NCS.Course.Mock.Function.DataGenerators;
 using DfE.NCS.Course.Mock.Function.Models;
+using DfE.NCS.Course.Mock.Function.Storage;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -10,12 +9,12 @@ namespace DfE.NCS.Course.Mock.Function.Functions
     public class GetCoursesFunction
     {
         private readonly ILogger<GetCoursesFunction> _logger;
-        private readonly IPaginationSettings _paginationSettings;
+        private readonly ICourseStore _courseStore;
 
-        public GetCoursesFunction(ILogger<GetCoursesFunction> logger, IPaginationSettings paginationSettings)
+        public GetCoursesFunction(ILogger<GetCoursesFunction> logger, ICourseStore courseStore)
         {
             _logger = logger;
-            _paginationSettings = paginationSettings;
+            _courseStore = courseStore;
         }
 
         [Function("GetCourses")]
@@ -38,20 +37,16 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 return errorResponse;
             }
 
-            if (!int.TryParse(req.Query["totalCount"], out var totalCount) || totalCount < 1)
-            {
-                totalCount = _paginationSettings.DefaultTotalCount;
-            }
-
-            var allCourses = CourseDataGenerator.Generate(totalCount);
+            var allCourses = _courseStore.Courses;
 
             var paginatedCourses = allCourses
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Cast<Models.Course>()
                 .ToList();
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(new CoursesResponse(paginatedCourses, totalCount, pageNumber, pageSize));
+            await response.WriteAsJsonAsync(new CoursesResponse(paginatedCourses, allCourses.Count, pageNumber, pageSize));
             return response;
         }
     }
