@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/api/courses/updates?cutOffDate=2024-11-19&pageNumber=3&pageSi\
+  ze=10"
+method: GET
+queryParams:
+  cutOffDate: 2024-11-19
+  pageNumber: "3"
+  pageSize: "10"
+auth:
+  type: noauth
+order: 2000

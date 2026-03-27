@@ -1,6 +1,5 @@
-using DfE.NCS.Course.Mock.Function.Configuration;
-using DfE.NCS.Course.Mock.Function.DataGenerators;
 using DfE.NCS.Course.Mock.Function.Models;
+using DfE.NCS.Course.Mock.Function.Storage;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -10,12 +9,12 @@ namespace DfE.NCS.Course.Mock.Function.Functions
     public class GetTLevelsFunction
     {
         private readonly ILogger<GetTLevelsFunction> _logger;
-        private readonly IPaginationSettings _paginationSettings;
+        private readonly ITLevelStore _tLevelStore;
 
-        public GetTLevelsFunction(ILogger<GetTLevelsFunction> logger, IPaginationSettings paginationSettings)
+        public GetTLevelsFunction(ILogger<GetTLevelsFunction> logger, ITLevelStore tLevelStore)
         {
             _logger = logger;
-            _paginationSettings = paginationSettings;
+            _tLevelStore = tLevelStore;
         }
 
         [Function("GetTLevels")]
@@ -38,15 +37,16 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 return errorResponse;
             }
 
-            var allTLevels = TLevelDataGenerator.Generate(_paginationSettings.DefaultTLevelsTotalCount);
+            var allTLevels = _tLevelStore.TLevels;
 
             var paginatedTLevels = allTLevels
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Cast<Models.TLevel>()
                 .ToList();
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(new TLevelsResponse(paginatedTLevels, _paginationSettings.DefaultTLevelsTotalCount, pageNumber, pageSize));
+            await response.WriteAsJsonAsync(new TLevelsResponse(paginatedTLevels, allTLevels.Count, pageNumber, pageSize));
             return response;
         }
     }

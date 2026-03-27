@@ -1,6 +1,5 @@
-using DfE.NCS.Course.Mock.Function.Configuration;
-using DfE.NCS.Course.Mock.Function.DataGenerators;
 using DfE.NCS.Course.Mock.Function.Models;
+using DfE.NCS.Course.Mock.Function.Storage;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -10,12 +9,12 @@ namespace DfE.NCS.Course.Mock.Function.Functions
     public class GetCoursesUpdatesFunction
     {
         private readonly ILogger<GetCoursesUpdatesFunction> _logger;
-        private readonly IPaginationSettings _paginationSettings;
+        private readonly ICourseStore _courseStore;
 
-        public GetCoursesUpdatesFunction(ILogger<GetCoursesUpdatesFunction> logger, IPaginationSettings paginationSettings)
+        public GetCoursesUpdatesFunction(ILogger<GetCoursesUpdatesFunction> logger, ICourseStore courseStore)
         {
             _logger = logger;
-            _paginationSettings = paginationSettings;
+            _courseStore = courseStore;
         }
 
         [Function("GetCoursesUpdates")]
@@ -45,12 +44,7 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 return errorResponse;
             }
 
-            if (!int.TryParse(req.Query["totalCount"], out var totalCount) || totalCount < 1)
-            {
-                totalCount = _paginationSettings.DefaultTotalCount;
-            }
-
-            var allCourses = CourseDataGenerator.GenerateUpdates(totalCount);
+            var allCourses = _courseStore.Courses;
 
             var filteredUpdates = allCourses
                 .Skip((pageNumber - 1) * pageSize)
@@ -58,7 +52,7 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 .ToList();
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(new CourseUpdatesResponse(filteredUpdates, totalCount, pageNumber, pageSize));
+            await response.WriteAsJsonAsync(new CourseUpdatesResponse(filteredUpdates, allCourses.Count, pageNumber, pageSize));
             return response;
         }
     }

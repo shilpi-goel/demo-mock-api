@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/t-levels/updates?cutOffDate=2025-01-15&pageNumber=2&pageS\
+  ize=7&totalCount=150"
+method: GET
+queryParams:
+  cutOffDate: 2025-01-15
+  pageNumber: "2"
+  pageSize: "7"
+  totalCount: "150"
+auth:
+  type: noauth
+order: 3000

@@ -278,3 +278,4 @@ __pycache__/
 
 /.gitignore
 /DfE.NCS.Course.Mock.Api/.vscode
+/DfE.NCS.Course.Mock.Api/DfE.NCS.Course.Mock.Function/postman/collections/OpenAPI Document on Azure Functions/etl

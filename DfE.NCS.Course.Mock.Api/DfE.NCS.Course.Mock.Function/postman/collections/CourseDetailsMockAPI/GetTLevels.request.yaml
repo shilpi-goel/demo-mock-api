@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{baseUrl}}/api/t-levels/list?pageNumber=10&pageSize=5"
+method: GET
+queryParams:
+  pageNumber: "10"
+  pageSize: "5"
+auth:
+  type: noauth
+order: 4000
