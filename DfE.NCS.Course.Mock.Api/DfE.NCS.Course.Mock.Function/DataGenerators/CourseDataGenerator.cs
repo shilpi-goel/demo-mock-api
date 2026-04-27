@@ -51,7 +51,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
         };
 
         // Update types: 1=NewlyAdded, 2=Updated, 3=Deleted
-        private static readonly int[] UpdateTypes = [1, 2, 3];
+        private static readonly int[] UpdateTypes = [ 2, 3];
         private static readonly Dictionary<int, string> UpdateTypeDescriptions = new()
         {
             { 1, "NewlyAdded" }, { 2, "Updated" }, { 3, "Deleted" }
@@ -185,13 +185,16 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
         {
             var courses = new List<CourseUpdateModel>(count);
 
+            DeterministicGuidProvider.Reset(); // Ensure we get the same sequence of GUIDs for updates/deletions
+
             for (int i = 0; i < count; i++)
             {
                 var course = GenerateCourse();
-                var updateTypeValue = PickRandom(UpdateTypes);
+                var id = i < 500 ? DeterministicGuidProvider.GetNext().ToString() : course.Id;
+                var updateTypeValue = i < 500 ? PickRandom(UpdateTypes) : 1; // First 500 are updates/deletions, rest are new additions
                 courses.Add(new CourseUpdateModel
                 {
-                    Id = course.Id,
+                    Id = id,
                     CourseId = course.CourseId,
                     CourseName = course.CourseName,
                     CourseType = course.CourseType,

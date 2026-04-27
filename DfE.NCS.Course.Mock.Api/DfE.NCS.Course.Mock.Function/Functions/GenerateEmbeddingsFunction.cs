@@ -130,8 +130,11 @@ public class GenerateEmbeddingsFunction
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Unexpcted error processing the request.");
+            _logger.LogError(ex.Message);
+            _logger.LogError(ex.StackTrace);
             var bad = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            await bad.WriteStringAsync("Unexpected error occured, pleaase see detail" + ex.Message);
+            await bad.WriteStringAsync("Unexpected error occured, pleaase see detail " + ex.Message);
             return bad;
         }
     }
