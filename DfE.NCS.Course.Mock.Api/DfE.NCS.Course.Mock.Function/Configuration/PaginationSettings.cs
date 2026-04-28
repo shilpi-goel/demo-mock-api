@@ -16,5 +16,7 @@ namespace DfE.NCS.Course.Mock.Function.Configuration
         public int DefaultTotalCount => _configuration.GetValue("PaginationSettings:DefaultTotalCount", 100);
 
         public int DefaultTLevelsTotalCount => _configuration.GetValue("PaginationSettings:DefaultTLevelsTotalCount", 100);
+
+        public int UpdatesTotalCount => _configuration.GetValue("PaginationSettings:UpdatesTotalCount", 50 );
     }
 }

@@ -1,3 +1,5 @@
+using DfE.NCS.Course.Mock.Function.Configuration;
+using DfE.NCS.Course.Mock.Function.DataGenerators;
 using DfE.NCS.Course.Mock.Function.Models;
 using DfE.NCS.Course.Mock.Function.Storage;
 using Microsoft.Azure.Functions.Worker;
@@ -10,11 +12,13 @@ namespace DfE.NCS.Course.Mock.Function.Functions
     {
         private readonly ILogger<GetCoursesFunction> _logger;
         private readonly ICourseStore _courseStore;
+        private readonly IPaginationSettings _paginationSettings;
 
-        public GetCoursesFunction(ILogger<GetCoursesFunction> logger, ICourseStore courseStore)
+        public GetCoursesFunction(ILogger<GetCoursesFunction> logger, ICourseStore courseStore, IPaginationSettings paginationSettings)
         {
             _logger = logger;
             _courseStore = courseStore;
+            _paginationSettings = paginationSettings;
         }
 
         [Function("GetCourses")]
@@ -37,7 +41,7 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 return errorResponse;
             }
 
-            var allCourses = _courseStore.Courses;
+            var allCourses = CourseDataGenerator.GenerateUpdates(_paginationSettings.DefaultTotalCount);
 
             var paginatedCourses = allCourses
                 .Skip((pageNumber - 1) * pageSize)

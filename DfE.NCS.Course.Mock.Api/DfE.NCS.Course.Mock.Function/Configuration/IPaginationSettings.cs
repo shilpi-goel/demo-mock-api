@@ -5,5 +5,6 @@ namespace DfE.NCS.Course.Mock.Function.Configuration
         int DefaultPageSize { get; }
         int DefaultTotalCount { get; }
         int DefaultTLevelsTotalCount { get; }
+        int UpdatesTotalCount { get; }
     }
 }
