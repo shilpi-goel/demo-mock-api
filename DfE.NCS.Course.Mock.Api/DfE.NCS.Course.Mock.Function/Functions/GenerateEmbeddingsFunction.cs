@@ -1,3 +1,4 @@
+using System.Data;
 using System.Net;
 using System.Text.Json;
 using Azure;
@@ -110,6 +111,10 @@ public class GenerateEmbeddingsFunction
                 ReadOnlyMemory<float> vectorReadOnly = embeddingResult.Value.ToFloats();
                 float[] vector = vectorReadOnly.ToArray();
 
+
+                // RAW vector 
+                byte[] embeddingVectorBytes = FloatArrayToByteArray(vector);
+
                 // convert vector to JSON
                 string embeddingJson = JsonSerializer.Serialize(vector);
 
@@ -118,6 +123,7 @@ public class GenerateEmbeddingsFunction
                     request.BatchId,
                     keyword,
                     embeddingJson,
+                    embeddingVectorBytes,
                     startDatetime,
                     endDatetime);
             }
@@ -139,10 +145,20 @@ public class GenerateEmbeddingsFunction
         }
     }
 
+
+    private static byte[] FloatArrayToByteArray(float[] vector)
+    {
+        var bytes = new byte[vector.Length * sizeof(float)];
+        Buffer.BlockCopy(vector, 0, bytes, 0, bytes.Length);
+        return bytes;
+    }
+
+
     private async Task SaveEmbeddingAsync(
             string batchId,
             string keyword,
             string embeddingJson,
+            byte[] embeddingVector,
             DateTime createdDateTime,
             DateTime endDatetime)
     {
@@ -152,14 +168,15 @@ public class GenerateEmbeddingsFunction
         var command = new SqlCommand(
         """
         INSERT INTO KeywordEmbeddings
-        (BatchId, Keyword, EmbeddingJson, StartDateTime, EndDateTime)
+        (BatchId, Keyword, EmbeddingJson, EmbeddingVector, StartDateTime, EndDateTime)
         VALUES
-        (@BatchId, @Keyword, @EmbeddingJson, @StartDateTime, @EndDateTime)
+        (@BatchId, @Keyword, @EmbeddingJson, @EmbeddingVector, @StartDateTime, @EndDateTime)
         """, (SqlConnection)connection);
 
         command.Parameters.AddWithValue("@BatchId", batchId);
         command.Parameters.AddWithValue("@Keyword", keyword);
         command.Parameters.AddWithValue("@EmbeddingJson", embeddingJson);
+        command.Parameters.AddWithValue("@EmbeddingVector", SqlDbType.VarBinary).Value = embeddingVector;
         command.Parameters.AddWithValue("@StartDateTime", createdDateTime);
         command.Parameters.AddWithValue("@EndDateTime", endDatetime);
 
