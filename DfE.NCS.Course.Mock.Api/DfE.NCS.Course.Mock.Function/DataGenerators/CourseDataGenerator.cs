@@ -181,7 +181,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             return courses;
         }
 
-        public static List<CourseUpdateModel> GenerateUpdates(int count = 100)
+        public static List<CourseUpdateModel> GenerateUpdates(int count = 100, bool invalid = false)
         {
             var courses = new List<CourseUpdateModel>(count);
 
@@ -191,8 +191,8 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                 var updateTypeValue = PickRandom(UpdateTypes);
                 courses.Add(new CourseUpdateModel
                 {
-                    Id = course.Id,
-                    CourseId = course.CourseId,
+                    Id = course.id,
+                    CourseId = invalid ? null : course.CourseId,
                     CourseName = course.CourseName,
                     CourseType = course.CourseType,
                     SectorDescription = course.SectorDescription,

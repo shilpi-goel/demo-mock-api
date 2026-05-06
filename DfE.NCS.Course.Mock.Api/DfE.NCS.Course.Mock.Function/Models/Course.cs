@@ -1,9 +1,12 @@
+using System.Text.Json.Serialization;
+
 namespace DfE.NCS.Course.Mock.Function.Models
 {
     public class Course
     {
         public string Id { get; set; }
-        public string CourseId { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? CourseId { get; set; }
         public string CourseName { get; set; }
         public StringEnumDescriptor? CourseType { get; set; }
         public string SectorDescription { get; set; }

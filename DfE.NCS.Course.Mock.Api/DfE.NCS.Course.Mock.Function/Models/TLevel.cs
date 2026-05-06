@@ -5,7 +5,8 @@ namespace DfE.NCS.Course.Mock.Function.Models
     public class TLevel
     {
         [JsonPropertyName("tlevelId")]
-        public string TLevelId { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? TLevelId { get; set; }
         public string CourseName { get; set; }
         public DateTime StartDate { get; set; }
         public string CourseWebsite { get; set; }
