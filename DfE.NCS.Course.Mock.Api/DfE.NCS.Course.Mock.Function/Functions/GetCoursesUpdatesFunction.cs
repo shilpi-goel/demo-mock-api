@@ -1,3 +1,5 @@
+using DfE.NCS.Course.Mock.Function.Configuration;
+using DfE.NCS.Course.Mock.Function.DataGenerators;
 using DfE.NCS.Course.Mock.Function.Models;
 using DfE.NCS.Course.Mock.Function.Storage;
 using Microsoft.Azure.Functions.Worker;
@@ -10,11 +12,13 @@ namespace DfE.NCS.Course.Mock.Function.Functions
     {
         private readonly ILogger<GetCoursesUpdatesFunction> _logger;
         private readonly ICourseStore _courseStore;
+        private readonly IPaginationSettings _paginationSettings;
 
-        public GetCoursesUpdatesFunction(ILogger<GetCoursesUpdatesFunction> logger, ICourseStore courseStore)
+        public GetCoursesUpdatesFunction(ILogger<GetCoursesUpdatesFunction> logger, ICourseStore courseStore, IPaginationSettings paginationSettings)
         {
             _logger = logger;
             _courseStore = courseStore;
+            _paginationSettings = paginationSettings;
         }
 
         [Function("GetCoursesUpdates")]

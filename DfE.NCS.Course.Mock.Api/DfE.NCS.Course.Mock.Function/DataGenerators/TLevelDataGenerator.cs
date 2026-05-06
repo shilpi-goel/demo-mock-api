@@ -12,7 +12,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
         private const int TLevelQualificationLevel = 3;
 
         // Update types: 1=NewlyAdded, 2=Updated, 3=Deleted
-        private static readonly int[] UpdateTypes = [1, 2, 3];
+        private static readonly int[] UpdateTypes = [2, 3];
         private static readonly Dictionary<int, string> UpdateTypeDescriptions = new()
         {
             { 1, "NewlyAdded" }, { 2, "Updated" }, { 3, "Deleted" }
@@ -89,7 +89,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             "{0} Innovation Drive"
         ];
 
-        public static List<TLevelModel> Generate(int count = 100)
+        public static List<TLevelModel> Generate(int count = 100, int updatesTotalCount = 50)
         {
             var tLevels = new List<TLevelModel>(count);
 
@@ -104,6 +104,8 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
         public static List<TLevelUpdateModel> GenerateUpdates(int count = 100, int updatesTotalCount = 50, bool invalid = false)
         {
             var tLevels = new List<TLevelUpdateModel>(count);
+
+            DeterministicGuidProvider.Reset(); // Ensure we get the same sequence of GUIDs for updates/deletions
 
             for (int i = 0; i < count; i++)
             {
