@@ -101,7 +101,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             return tLevels;
         }
 
-        public static List<TLevelUpdateModel> GenerateUpdates(int count = 100, int updatesTotalCount = 50)
+        public static List<TLevelUpdateModel> GenerateUpdates(int count = 100, int updatesTotalCount = 50, bool invalid = false)
         {
             var tLevels = new List<TLevelUpdateModel>(count);
 
@@ -112,9 +112,9 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                 var tLevel = GenerateTLevel();
                 var tLevelId = i < updatesTotalCount ? DeterministicGuidProvider.GetNext().ToString() : tLevel.TLevelId;
                 var updateTypeValue = i < updatesTotalCount ? PickRandom(UpdateTypes) : 1; // First 500 are updates/deletions, rest are new additions
-                tLevels.Add(new TLevelUpdateModel
+                var course = new TLevelUpdateModel
                 {
-                    TLevelId = tLevelId,
+                    TLevelId = invalid ? null: tLevelId,
                     CourseName = tLevel.CourseName,
                     StartDate = tLevel.StartDate,
                     CourseWebsite = tLevel.CourseWebsite,
@@ -138,7 +138,9 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
                     Longitude = tLevel.Longitude,
                     TLevelQualificationLevel = tLevel.TLevelQualificationLevel,
                     UpdateType = new EnumDescriptor(updateTypeValue, UpdateTypeDescriptions[updateTypeValue])
-                });
+                };            
+
+                tLevels.Add(course);                
             }
 
             return tLevels;

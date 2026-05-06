@@ -41,7 +41,8 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 return errorResponse;
             }
 
-            var allCourses = CourseDataGenerator.GenerateUpdates(_paginationSettings.DefaultTotalCount);
+            var invalid = bool.TryParse(req.Query["invalid"], out var invalidValue) && invalidValue;
+            var allCourses = CourseDataGenerator.GenerateUpdates(_paginationSettings.DefaultTLevelsTotalCount, invalid);
 
             var paginatedCourses = allCourses
                 .Skip((pageNumber - 1) * pageSize)

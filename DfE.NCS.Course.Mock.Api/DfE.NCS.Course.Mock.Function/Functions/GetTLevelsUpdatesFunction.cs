@@ -48,7 +48,8 @@ namespace DfE.NCS.Course.Mock.Function.Functions
                 return errorResponse;
             }
 
-            var allTLevels = TLevelDataGenerator.GenerateUpdates(_paginationSettings.DefaultTLevelsTotalCount);
+            var invalid = bool.TryParse(req.Query["invalid"], out var invalidValue) && invalidValue;
+            var allTLevels = TLevelDataGenerator.GenerateUpdates(_paginationSettings.DefaultTLevelsTotalCount, _paginationSettings.UpdatesTotalCount, invalid);
 
             var filteredUpdates = allTLevels
                 .Skip((pageNumber - 1) * pageSize)
