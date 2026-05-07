@@ -1,4 +1,5 @@
 ﻿using DfE.NCS.Course.Mock.Function.Models;
+using DfE.NCS.Course.Mock.Function.Utilities;
 using CourseModel = DfE.NCS.Course.Mock.Function.Models.Course;
 using CourseUpdateModel = DfE.NCS.Course.Mock.Function.Models.CourseUpdate;
 
