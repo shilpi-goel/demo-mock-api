@@ -105,12 +105,12 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
         {
             var tLevels = new List<TLevelUpdateModel>(count);
 
-            DeterministicGuidProvider.Reset(); // Ensure we get the same sequence of GUIDs for updates/deletions
+            DeterministicGuidProvider.Reset("tlevels"); // use a tlevels-specific stream
 
             for (int i = 0; i < count; i++)
             {
                 var tLevel = GenerateTLevel();
-                var tLevelId = i < updatesTotalCount ? DeterministicGuidProvider.GetNext().ToString() : tLevel.TLevelId;
+                var tLevelId = i < updatesTotalCount ? DeterministicGuidProvider.GetNext("tlevels").ToString() : tLevel.TLevelId;
                 var updateTypeValue = i < updatesTotalCount ? PickRandom(UpdateTypes) : 1; // First 500 are updates/deletions, rest are new additions
                 var course = new TLevelUpdateModel
                 {
