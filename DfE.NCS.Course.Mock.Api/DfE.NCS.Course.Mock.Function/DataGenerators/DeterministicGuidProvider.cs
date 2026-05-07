@@ -1,69 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Threading;
+using System.Text;
 
-namespace DfE.NCS.Course.Mock.Function.DataGenerators;
-
-using System;
-using System.Security.Cryptography;
-using System.Threading;
-
-public static class DeterministicGuidProvider
+namespace DfE.NCS.Course.Mock.Function.Utilities
 {
-    private const int GuidCount = 500;
-    private static readonly Guid[] _guids;
-    private static int _currentIndex = -1;
-
-    private static readonly byte[] _seed = new byte[]
+    internal static class DeterministicGuidProvider
     {
-        10, 20, 30, 40, 50, 60, 70, 80,
-        90, 100, 110, 120, 130, 140, 150, 160
-    };
+        private static readonly object _lock = new();
+        private static readonly Dictionary<string, long> _counters = new();
 
-    static DeterministicGuidProvider()
-    {
-        _guids = GenerateGuids();
-    }
-
-    /// <summary>
-    /// Returns one unique deterministic GUID per call.
-    /// </summary>
-    public static Guid GetNext()
-    {
-        int index = Interlocked.Increment(ref _currentIndex);
-
-        if (index >= GuidCount)
+        public static void Reset(string stream = "default")
         {
-            throw new InvalidOperationException("All deterministic GUIDs have been used.");
+            lock (_lock)
+            {
+                _counters[stream] = 0;
+            }
         }
 
-        return _guids[index];
-    }
-
-    /// <summary>
-    /// Resets the sequence so the same GUIDs are returned again from the start.
-    /// </summary>
-    public static void Reset()
-    {
-        Interlocked.Exchange(ref _currentIndex, -1);
-    }
-
-    private static Guid[] GenerateGuids()
-    {
-        var result = new Guid[GuidCount];
-        using var sha256 = SHA256.Create();
-
-        byte[] current = _seed;
-
-        for (int i = 0; i < GuidCount; i++)
+        public static void ResetAll()
         {
-            current = sha256.ComputeHash(current);
-            byte[] guidBytes = new byte[16];
-            Array.Copy(current, guidBytes, 16);
-            result[i] = new Guid(guidBytes);
+            lock (_lock)
+            {
+                _counters.Clear();
+            }
         }
 
-        return result;
+        public static Guid GetNext(string stream = "default")
+        {
+            lock (_lock)
+            {
+                if (!_counters.ContainsKey(stream))
+                    _counters[stream] = 0;
+
+                var counter = _counters[stream]++;
+                var input = $"{stream}:{counter}";
+
+                using var md5 = MD5.Create(); // 16 bytes -> Guid
+                var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return new Guid(hash);
+            }
+        }
     }
 }

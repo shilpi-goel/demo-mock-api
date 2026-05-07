@@ -185,12 +185,12 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
         {
             var courses = new List<CourseUpdateModel>(count);
 
-            DeterministicGuidProvider.Reset(); // Ensure we get the same sequence of GUIDs for updates/deletions
+            DeterministicGuidProvider.Reset("courses"); // use a courses-specific stream
 
             for (int i = 0; i < count; i++)
             {
                 var course = GenerateCourse();
-                var id = i < 500 ? DeterministicGuidProvider.GetNext().ToString() : course.Id;
+                var id = i < 500 ? DeterministicGuidProvider.GetNext("courses").ToString() : course.Id;
                 var updateTypeValue = i < 500 ? PickRandom(UpdateTypes) : 1; // First 500 are updates/deletions, rest are new additions
                 courses.Add(new CourseUpdateModel
                 {
