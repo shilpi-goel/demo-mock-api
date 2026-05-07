@@ -6,5 +6,6 @@ namespace DfE.NCS.Course.Mock.Function.Configuration
         int DefaultTotalCount { get; }
         int DefaultTLevelsTotalCount { get; }
         int UpdatesTotalCount { get; }
+        int DefaultCoursesTotalCount { get; }
     }
 }
