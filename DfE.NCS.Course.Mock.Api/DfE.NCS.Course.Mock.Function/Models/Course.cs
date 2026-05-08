@@ -4,7 +4,7 @@ namespace DfE.NCS.Course.Mock.Function.Models
 {
     public class Course
     {
-        public string Id { get; set; }
+        [JsonPropertyName("courseId")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? CourseId { get; set; }
         public string CourseName { get; set; }

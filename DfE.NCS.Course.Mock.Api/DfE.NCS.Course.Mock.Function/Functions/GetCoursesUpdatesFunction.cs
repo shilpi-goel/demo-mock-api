@@ -51,7 +51,7 @@ namespace DfE.NCS.Course.Mock.Function.Functions
             var invalid = bool.TryParse(req.Query["invalid"], out var invalidValue) && invalidValue;
 
             // Align total count usage to courses (was using TLevels count)
-            var allCourses = CourseDataGenerator.GenerateUpdates(_paginationSettings.DefaultCoursesTotalCount, invalid);
+            var allCourses = CourseDataGenerator.GenerateUpdates(_paginationSettings.DefaultCoursesTotalCount, _paginationSettings.UpdatesTotalCount, invalid);
 
             var filteredUpdates = allCourses
                 .Skip((pageNumber - 1) * pageSize)

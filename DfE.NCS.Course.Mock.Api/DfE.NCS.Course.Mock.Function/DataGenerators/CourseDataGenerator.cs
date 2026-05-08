@@ -182,7 +182,7 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             return courses;
         }
 
-        public static List<CourseUpdateModel> GenerateUpdates(int count = 100, bool invalid = false)
+        public static List<CourseUpdateModel> GenerateUpdates(int count = 100, int updatesTotalCount = 50, bool invalid = false)
         {
             var courses = new List<CourseUpdateModel>(count);
 
@@ -191,12 +191,11 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
             for (int i = 0; i < count; i++)
             {
                 var course = GenerateCourse();
-                var id = i < 500 ? DeterministicGuidProvider.GetNext("courses").ToString() : course.Id;
-                var updateTypeValue = i < 500 ? PickRandom(UpdateTypes) : 1; // First 500 are updates/deletions, rest are new additions
+                var courseId = i < updatesTotalCount ? DeterministicGuidProvider.GetNext("tlevels").ToString() : course.CourseId;
+                var updateTypeValue = i < updatesTotalCount ? PickRandom(UpdateTypes) : 1; // First 500 are updates/deletions, rest are new additions
                 courses.Add(new CourseUpdateModel
                 {
-                    Id = id,
-                    CourseId = invalid ? null : course.CourseId,
+                    CourseId = invalid ? null : courseId,                    
                     CourseName = course.CourseName,
                     CourseType = course.CourseType,
                     SectorDescription = course.SectorDescription,
@@ -268,7 +267,6 @@ namespace DfE.NCS.Course.Mock.Function.DataGenerators
 
             return new CourseModel
             {
-                Id = Guid.NewGuid().ToString(),
                 CourseId = Guid.NewGuid().ToString(),
                 CourseName = courseName,
                 CourseType = MaybeNullRef(new StringEnumDescriptor(courseTypeValue, CourseTypeDescriptions[courseTypeValue])),
